@@ -9,6 +9,9 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\data\Pagination;
+use app\models\Country;
+use app\models\Telegram;
 
 class SiteController extends Controller
 {
@@ -124,5 +127,40 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionTelegram(){
+        $query = Telegram::find();
+
+        // $pagination = new Pagination([
+        //     'defaultPageSize' => 5,
+        //     'totalCount' => $query->count(),
+        // ]);
+
+        $texts = $query->all();
+        return $this->render('telegram', [
+            'texts' => $texts,
+            // 'pagination' => $pagination,
+        ]);
+    }
+
+    public function actionCountry()
+    {
+        $query = Country::find();
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
+
+        $countries = $query->orderBy('name')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('country', [
+            'countries' => $countries,
+            'pagination' => $pagination,
+        ]);
     }
 }
