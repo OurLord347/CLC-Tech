@@ -132,16 +132,16 @@ class SiteController extends Controller
     public function actionTelegram(){
         $query = Telegram::find();
 
-        // $pagination = new Pagination([
-        //     'defaultPageSize' => 5,
-        //     'totalCount' => $query->count(),
-        // ]);
-
         $texts = $query->all();
         return $this->render('telegram', [
             'texts' => $texts,
-            // 'pagination' => $pagination,
         ]);
+    }
+
+    public function actionTelegramsave(){
+        $country = new Telegram();
+        $country->text = strip_tags($_REQUEST['text']);
+        $country->save();
     }
 
     public function actionCountry()
