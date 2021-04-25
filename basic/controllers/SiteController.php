@@ -11,7 +11,8 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\data\Pagination;
 use app\models\Country;
-use app\models\Telegram;
+// use app\models\Telegram;
+
 
 class SiteController extends Controller
 {
@@ -130,12 +131,18 @@ class SiteController extends Controller
     }
 
     public function actionTelegram(){
-        $query = Telegram::find();
+        require '..\vendor\autoload.php';
 
-        $texts = $query->all();
-        return $this->render('telegram', [
-            'texts' => $texts,
-        ]);
+        $API_KEY = '1770242512:AAGgQM2D2Zp9TSDeJcm-w_sofXAjR4_dqis';
+        $BOT_NAME = 'clcTest777_bot';
+
+        try {
+            $telegram = new Longman\TelegramBot\Telegram($API_KEY, $BOT_NAME);
+
+            echo $telegram->setWebHook('https://yourdomain/hook.php');
+        } catch (Longman\TelegramBot\Exception\TelegramException $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function actionTelegramsave(){
